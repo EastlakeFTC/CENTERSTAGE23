@@ -13,7 +13,7 @@ public class Drive extends OpMode {
     DcMotor rightDrive;
     DcMotor intake;
     DcMotor arm;
-    Servo claw;
+    Servo launcher;
     static final double ticks = 1425.1;
     static final double GEAR_REDUCTION = 5.0;
     boolean runningEncoder = false;
@@ -26,7 +26,7 @@ public class Drive extends OpMode {
         rightDrive = hardwareMap.get(DcMotor.class, "rightDrive");
         intake = hardwareMap.get(DcMotor.class, "intake");
         arm = hardwareMap.get(DcMotor.class, "arm");
-        claw = hardwareMap.get(Servo.class, "claw");
+        launcher = hardwareMap.get(Servo.class, "launcher");
 
         telemetry.addData("Beep", "Boop");
 
@@ -65,7 +65,7 @@ public class Drive extends OpMode {
         // arm angle variable accounts for gear ratio (20:100, 1:5)
         double armAngle = arm.getCurrentPosition()/5.0;
 
-        telemetry.addData("Servo Position:", claw.getPosition());
+        telemetry.addData("Servo Position:", launcher.getPosition());
 
         if(!runningEncoder) {
             // manual option for the arm
@@ -110,11 +110,7 @@ public class Drive extends OpMode {
         }
 
         if(gamepad1.a){
-            if(claw.getPosition() == 0){
-                claw.setPosition(1);
-            }else{
-                claw.setPosition(0);
-            }
+            launcher.setPosition(1);
         }
 
         telemetry.addData("Intake Power", intakePower);
