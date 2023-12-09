@@ -59,7 +59,7 @@ public class Drive extends OpMode {
         // when the controller has the right trigger held down, intake goes forward for however much
         // it is being held down, while when the controller has the left trigger held down, intake
         // goes backwards
-        double intakePower = (-gamepad1.right_trigger + (gamepad1.left_trigger)/3.0)/1.1;
+        double intakePower = (-gamepad1.right_trigger + gamepad1.left_trigger)/3.0;
         intake.setPower(intakePower);
 
         // arm angle variable accounts for gear ratio (20:100, 1:5)
