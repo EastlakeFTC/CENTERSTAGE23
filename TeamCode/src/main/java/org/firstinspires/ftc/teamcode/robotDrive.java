@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+// note: for imu we are orthogonal 8, logo forward and usb right
 
 // this program holds the functions for the robot to use during auton such as "drive forward' or "turn"
 public class robotDrive {
