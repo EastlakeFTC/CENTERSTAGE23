@@ -82,6 +82,9 @@ public class redAutonNear extends LinearOpMode{
         int newLeftTarget = leftDrive.getCurrentPosition() + (int)(leftInches * countsPerInch);
         int newRightTarget = rightDrive.getCurrentPosition() + (int)(leftInches * countsPerInch);
 
+        leftDrive.setTargetPosition(newLeftTarget);
+        rightDrive.setTargetPosition(newRightTarget);
+
         leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
