@@ -38,21 +38,21 @@ public class redAutonNear extends LinearOpMode{
         waitForStart();
 
         // drive to spike mark and outake pixel
-        drive("forward", 1000);
+        drive("forward", 36, 36);
         sleep(300);
 
         intake.setPower(0.33);
         sleep(500);
         intake.setPower(0);
 
-        drive("reverse", 1000);
+        drive("reverse", 36, 36);
         sleep(300);
 
         // turn and drive to backstage, then outake another pixel
         turnRight(1500);
         sleep(300);
 
-        drive("forward", 1000);
+        drive("forward", 48, 48);
         sleep(300);
 
         intake.setPower(0.33);
@@ -68,7 +68,7 @@ public class redAutonNear extends LinearOpMode{
     }
 
 
-    private void drive(String direction, int duration){
+    private void drive(String direction, int leftInches, int rightInches){
         if(direction == "forward") {
             leftDrive.setDirection(DcMotor.Direction.FORWARD);
             rightDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -79,13 +79,18 @@ public class redAutonNear extends LinearOpMode{
             telemetry.addData("Error:", "Wrong direction in drive parameter");
         }
 
+        int newLeftTarget = leftDrive.getCurrentPosition() + (int)(leftInches * countsPerInch);
+        int newRightTarget = rightDrive.getCurrentPosition() + (int)(leftInches * countsPerInch);
 
-        leftDrive.setPower(0.5);
-        rightDrive.setPower(0.5);
+        leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+        while(leftDrive.isBusy() || rightDrive.isBusy()){
+            telemetry.addData("Running to pos, left drive pos: ", leftDrive.getCurrentPosition());
+        }
 
-        sleep(duration);
         stopDrive();
+
     }
 
 
