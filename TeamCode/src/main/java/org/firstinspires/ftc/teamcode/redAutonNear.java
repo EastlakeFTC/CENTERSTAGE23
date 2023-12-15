@@ -4,6 +4,7 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
@@ -11,9 +12,17 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 @Autonomous(name = "Red Near Auton")
 public class redAutonNear extends LinearOpMode{
+    IMU imu;
     DcMotor leftDrive;
     DcMotor rightDrive;
     DcMotor intake;
+
+    //encoder variables
+    double ticks = 537.7;
+    double wheelCircumfrence = (3.75 * Math.PI);
+    double robotCircumfrence = (17 * Math.PI);
+    double reduction = 0.714285;
+    double countsPerInch = (ticks * reduction)/wheelCircumfrence;
 
 
     public void runOpMode(){

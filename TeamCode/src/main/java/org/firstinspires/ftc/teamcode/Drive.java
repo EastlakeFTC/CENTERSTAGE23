@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name = "Drive")
 
@@ -14,10 +15,9 @@ public class Drive extends OpMode {
     DcMotor intake;
     DcMotor arm;
     Servo launcher;
-    static final double ticks = 1425.1;
-    static final double GEAR_REDUCTION = 5.0;
     boolean runningEncoder = false;
-
+    boolean started = false;
+    private ElapsedTime runTime = new ElapsedTime();
 
     @Override
     public void init() {
@@ -39,13 +39,21 @@ public class Drive extends OpMode {
         arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        launcher.setDirection(Servo.Direction.FORWARD);
     }
 
     @Override
     public void loop() {
+        // reset run time since it starts when you hit init
+        if(!started){
+            runTime.reset();
+            started = true;
+        }
+
         // y is the controller's left stick y value on the y axis, and x is the value on the x axis
         double y = gamepad1.left_stick_y;
-        double x = gamepad1.right_stick_x;
+        double x = gamepad1.right_stick_x/1.5;
         double leftPower = (-y-x)/1.1;
         double rightPower = (y-x)/1.1;
 
@@ -59,7 +67,7 @@ public class Drive extends OpMode {
         // when the controller has the right trigger held down, intake goes forward for however much
         // it is being held down, while when the controller has the left trigger held down, intake
         // goes backwards
-        double intakePower = (-gamepad1.right_trigger + gamepad1.left_trigger)/3.0;
+        double intakePower = -gamepad1.right_trigger + (gamepad1.left_trigger/3.0);
         intake.setPower(intakePower);
 
         // arm angle variable accounts for gear ratio (20:100, 1:5)
@@ -109,8 +117,12 @@ public class Drive extends OpMode {
             arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
 
-        if(gamepad1.a){
-            launcher.setPosition(1);
+        if(gamepad1.b) {
+            launcher.setPosition(1.0);
+        }
+
+        if(gamepad1.dpad_down){
+            launcher.setPosition(0.0);
         }
 
         telemetry.addData("Intake Power", intakePower);
