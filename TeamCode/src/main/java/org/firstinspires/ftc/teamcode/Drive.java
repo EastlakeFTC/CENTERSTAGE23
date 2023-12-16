@@ -56,6 +56,9 @@ public class Drive extends OpMode {
         double x = gamepad1.right_stick_x/1.5;
         double leftPower = (-y-x)/1.1;
         double rightPower = (y-x)/1.1;
+        // optional tank drive testing maybe
+        // leftDrive.setPower(gamepad1.left_stick_y);
+        // rightDrive.setPower(gamepad1.right_stick_y);
 
         telemetry.clear();
         telemetry.addData("Left Power", leftPower);

@@ -33,23 +33,35 @@ public class blueAutonFar extends LinearOpMode{
         drive("forward", 36, 36);
         sleep(300);
 
+        telemetry.addData("Drove to:", "spike mark");
+
         intake.setPower(0.33);
         sleep(500);
         intake.setPower(0);
 
+        telemetry.addData("Outtaked:", "pixel");
+
         drive("reverse", 36, 36);
         sleep(300);
+
+        telemetry.addData("Drove to:", "start");
 
         // turn and drive to backstage, then outake another pixel
         turnLeft(1500);
         sleep(300);
 
+        telemetry.addData("Turned:", "left");
+
         drive("forward", 96, 96);
         sleep(300);
+
+        telemetry.addData("Drove to:", "backstage");
 
         intake.setPower(0.33);
         sleep(1000);
         intake.setPower(0);
+
+        telemetry.addData("Outtaked:", "pixel");
     }
 
 
@@ -72,7 +84,7 @@ public class blueAutonFar extends LinearOpMode{
         }
 
         int newLeftTarget = leftDrive.getCurrentPosition() + (int)(leftInches * countsPerInch);
-        int newRightTarget = rightDrive.getCurrentPosition() + (int)(leftInches * countsPerInch);
+        int newRightTarget = rightDrive.getCurrentPosition() + (int)(rightInches * countsPerInch);
 
         leftDrive.setTargetPosition(newLeftTarget);
         rightDrive.setTargetPosition(newRightTarget);
