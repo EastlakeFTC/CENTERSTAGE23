@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 @Autonomous(name = "Sample Auton")
 public class sampleAuton extends LinearOpMode{
 
-    DcMotor left = hardwareMap.get(DcMotor.class, "left");
-    DcMotor right = hardwareMap.get(DcMotor.class, "right");
+    DcMotor left = hardwareMap.get(DcMotor.class, "leftDrive");
+    DcMotor right = hardwareMap.get(DcMotor.class, "rightDrive");
     DcMotor intake = hardwareMap.get(DcMotor.class, "intake");
     robotDrive bot = new robotDrive(left, right, intake);
     public void runOpMode() throws InterruptedException {

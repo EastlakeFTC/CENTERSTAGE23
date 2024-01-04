@@ -6,9 +6,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name = "Drive")
+@TeleOp(name = "cheeseDrive")
 
-public class Drive extends OpMode {
+public class cheeseDrive extends OpMode {
     // declare motors, ticks (encoder resolution), and newTarget for motor's future target pos
     DcMotor leftDrive;
     DcMotor rightDrive;
@@ -18,6 +18,9 @@ public class Drive extends OpMode {
     boolean runningEncoder = false;
     boolean started = false;
     private ElapsedTime runTime = new ElapsedTime();
+
+    double leftPower;
+    double rightPower;
 
     @Override
     public void init() {
@@ -52,10 +55,21 @@ public class Drive extends OpMode {
         }
 
         // y is the controller's left stick y value on the y axis, and x is the value on the x axis
-        double y = gamepad1.left_stick_y;
-        double x = gamepad1.right_stick_x/1.5;
-        double leftPower = (-y-x)/1.1;
-        double rightPower = (y-x)/1.1;
+        leftPower = gamepad1.right_trigger - gamepad1.left_trigger;
+        rightPower = gamepad1.right_trigger - gamepad1.left_trigger;
+
+        // turning right
+        if(gamepad1.left_stick_x > 0.2){
+
+
+
+        }
+        // turning left
+        else if(gamepad1.left_stick_x < 0.2){
+
+
+
+        }
 
         telemetry.clear();
         telemetry.addData("Left Power", leftPower);
@@ -97,9 +111,9 @@ public class Drive extends OpMode {
             arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             if(armAngle >= 0){
-                arm.setPower(-1);
+                arm.setPower(-0.8);
             }else {
-                arm.setPower(1);
+                arm.setPower(0.8);
             }
 
             while(arm.isBusy()){
