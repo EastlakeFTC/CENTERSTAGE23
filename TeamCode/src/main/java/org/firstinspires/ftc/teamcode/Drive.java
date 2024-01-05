@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name = "Drive")
@@ -15,6 +16,7 @@ public class Drive extends OpMode {
     DcMotor intake;
     DcMotor arm;
     Servo launcher;
+    CRServo linear;
     boolean runningEncoder = false;
     boolean started = false;
     private ElapsedTime runTime = new ElapsedTime();
@@ -27,8 +29,7 @@ public class Drive extends OpMode {
         intake = hardwareMap.get(DcMotor.class, "intake");
         arm = hardwareMap.get(DcMotor.class, "arm");
         launcher = hardwareMap.get(Servo.class, "launcher");
-
-        telemetry.addData("Beep", "Boop");
+        linear = hardwareMap.get(CRServo.class, "linear");
 
         // setup motors to use encoders and set their stopping to brake
         leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -123,6 +124,14 @@ public class Drive extends OpMode {
 
         if(gamepad1.dpad_down){
             launcher.setPosition(0.0);
+        }
+
+        if(gamepad1.dpad_right){
+            linear.setPower(1);
+        }
+
+        if(gamepad1.dpad_left){
+            linear.setPower(0);
         }
 
         telemetry.addData("Intake Power", intakePower);
