@@ -128,10 +128,10 @@ public class Drive extends OpMode {
 
         if(gamepad1.dpad_right){
             linear.setPower(1);
-        }
-
-        if(gamepad1.dpad_left){
-            linear.setPower(0);
+        }else if(gamepad1.dpad_left){
+            linear.setPower(-1);
+        }else{
+            linear.setPower(0.5);
         }
 
         telemetry.addData("Intake Power", intakePower);

@@ -1,8 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
 
+
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.opencv.core.Scalar;
@@ -10,42 +15,96 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous(name="OpenCV Contour Test", group="Tutorials")
 
-public class auto extends LinearOpMode {
+@Autonomous(name="Blue Auto")
+
+
+public class blueAuto extends LinearOpMode {
     private OpenCvCamera webcam;
+
 
     private static final int CAMERA_WIDTH  = 1280; // width  of wanted camera resolution
     private static final int CAMERA_HEIGHT = 720; // height of wanted camera resolution
+
 
     private double CrLowerUpdate = 160;
     private double CbLowerUpdate = 100;
     private double CrUpperUpdate = 255;
     private double CbUpperUpdate = 255;
 
+
     public static double borderLeftX    = 0.0;   //fraction of pixels from the left side of the cam to skip
     public static double borderRightX   = 0.0;   //fraction of pixels from the right of the cam to skip
     public static double borderTopY     = 0.0;   //fraction of pixels from the top of the cam to skip
     public static double borderBottomY  = 0.0;   //fraction of pixels from the bottom of the cam to skip
 
+
     private double lowerruntime = 0;
     private double upperruntime = 0;
+
 
     // Pink Range                                      Y      Cr     Cb
 //    public static Scalar scalarLowerYCrCb = new Scalar(  0.0, 160.0, 100.0);
 //    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 255.0);
 
+
     // Yellow Range
     //public static Scalar scalarLowerYCrCb = new Scalar(0.0, 100.0, 0.0);
 //  public static Scalar scalarUpperYCrCb = new Scalar(255.0, 170.0, 120.0);
 
-    // Red Range
-    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 160.0, 100.0);
-    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 255.0);
+
+    // Blue Range
+    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 0.0, 120.0);
+    public static Scalar scalarUpperYCrCb = new Scalar(128.0, 100.0, 255.0);
+
+
+    // declare motors
+    private DcMotor leftDrive = null;
+    private DcMotor rightDrive = null;
+    private DcMotor intake = null;
+    private final ElapsedTime runtime = new ElapsedTime();
+
+
+    //measurements in inches
+    double wheelDiam = 3.75;
+    double robotDiam = 16.0;
+    double robotCircumference = (robotDiam* Math.PI);
+
+
+
+
+    //encoder resolution
+    double ticks = 537.7;
+
+
+    //inverse gear ratio of sprockets
+    double reduction = 0.714285;
+    double counts_per_inch = (ticks * reduction)/(wheelDiam * Math.PI);
+
+
+    boolean notMoved = true;
+
+
+
 
     @Override
     public void runOpMode()
     {
+        // setup motors
+        leftDrive = hardwareMap.get(DcMotor.class, "leftDrive");
+        rightDrive = hardwareMap.get(DcMotor.class, "rightDrive");
+        intake = hardwareMap.get(DcMotor.class, "intake");
+
+
+
+
+        leftDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightDrive.setDirection(DcMotor.Direction.FORWARD);
+        intake.setDirection(DcMotor.Direction.FORWARD);
+
+
+
+
         // OpenCV webcam
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Goofy Cam"), cameraMonitorViewId);
@@ -64,6 +123,7 @@ public class auto extends LinearOpMode {
                 webcam.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT);
             }
 
+
             @Override
             public void onError(int errorCode)
             {
@@ -73,10 +133,12 @@ public class auto extends LinearOpMode {
             }
         });
 
+
         telemetry.update();
         waitForStart();
 
-        while (opModeIsActive())
+
+        while (opModeIsActive() && notMoved)
         {
             myPipeline.configureBorders(borderLeftX, borderRightX, borderTopY, borderBottomY);
             if(myPipeline.error){
@@ -85,21 +147,54 @@ public class auto extends LinearOpMode {
             // Only use this line of the code when you want to find the lower and upper values
             testing(myPipeline);
 
-            telemetry.addData("RectArea: ", myPipeline.getRectArea());
+
+            telemetry.addData("RectHeight: ", myPipeline.getRectHeight());
             telemetry.update();
+
+
+            encoderDrive(0.1, 12, 12, 10);
+
+
 //\sample
-            if(myPipeline.getRectArea() > 2000){
-                if(myPipeline.getRectMidpointX() > 400){
-                    AUTONOMOUS_C();
+            while (notMoved) {
+                if (myPipeline.getRectHeight() > 100 && notMoved) {
+                    if (myPipeline.getRectMidpointX() < (CAMERA_WIDTH / 3.0) * 2.0) {
+                        AUTONOMOUS_B();
+                        notMoved = false;
+                    }
                 }
-                else if(myPipeline.getRectMidpointX() > 200){
-                    AUTONOMOUS_B();
+
+
+                if (notMoved) {
+                    encoderDrive(0.1, -robotCircumference / 8, robotCircumference / 8, 5);
+                    sleep(100);
                 }
-                else {
+
+
+                if (myPipeline.getRectHeight() > 150 && notMoved) {
+                    if (myPipeline.getRectMidpointX() < CAMERA_WIDTH / 3.0) {
+                        AUTONOMOUS_C();
+                        notMoved = false;
+                    }
+                }
+
+
+                if (notMoved) {
+                    encoderDrive(0.1, robotCircumference / 4, -robotCircumference / 4, 5);
+                    sleep(100);
+                }
+
+
+                if (myPipeline.getRectHeight() > 50 && notMoved) {
+                    notMoved = false;
                     AUTONOMOUS_A();
                 }
             }
         }
+        intake.setPower(0.5);
+        encoderDrive(0.05, -5, -5, 5);
+        sleep(500);
+        intake.setPower(0);
     }
     public void testing(ContourPipeline myPipeline){
         if(lowerruntime + 0.05 < getRuntime()){
@@ -113,13 +208,16 @@ public class auto extends LinearOpMode {
             upperruntime = getRuntime();
         }
 
+
         CrLowerUpdate = inValues(CrLowerUpdate, 0, 255);
         CrUpperUpdate = inValues(CrUpperUpdate, 0, 255);
         CbLowerUpdate = inValues(CbLowerUpdate, 0, 255);
         CbUpperUpdate = inValues(CbUpperUpdate, 0, 255);
 
+
         myPipeline.configureScalarLower(0.0, CrLowerUpdate, CbLowerUpdate);
         myPipeline.configureScalarUpper(255.0, CrUpperUpdate, CbUpperUpdate);
+
 
         telemetry.addData("lowerCr ", (int)CrLowerUpdate);
         telemetry.addData("lowerCb ", (int)CbLowerUpdate);
@@ -132,12 +230,84 @@ public class auto extends LinearOpMode {
         return value;
     }
     public void AUTONOMOUS_A(){
-        telemetry.addLine("Autonomous A");
+        telemetry.addData("dir", "right");
+        encoderDrive(0.1, 8, 8, 7);
     }
     public void AUTONOMOUS_B(){
-        telemetry.addLine("Autonomous B");
+        telemetry.addData("dir", "center");
+        encoderDrive(0.1, 20, 20, 10);
     }
     public void AUTONOMOUS_C(){
-        telemetry.addLine("Autonomous C");
+        telemetry.addData("dir", "left");
+        encoderDrive(0.1, 8, 8, 7);
+    }
+
+
+
+
+    public void encoderDrive(double speed, double leftInches, double rightInches, double timeoutS) {
+
+
+
+
+        int newLeftTarget;
+        int newRightTarget;
+
+
+
+
+        if (opModeIsActive()) {
+
+
+
+
+            newLeftTarget = (leftDrive.getCurrentPosition() + (int)(leftInches * counts_per_inch));
+            newRightTarget = (rightDrive.getCurrentPosition() + (int)(rightInches * counts_per_inch));
+            leftDrive.setTargetPosition(newLeftTarget);
+            rightDrive.setTargetPosition(newRightTarget);
+
+
+
+
+            leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+
+
+            runtime.reset();
+            leftDrive.setPower(Math.abs(speed));
+            rightDrive.setPower(Math.abs(speed));
+
+
+
+
+            while (opModeIsActive() &&
+                    (runtime.seconds() < timeoutS) &&
+                    (leftDrive.isBusy() && rightDrive.isBusy())) {
+                telemetry.addData("Running to", " %7d :%7d", newLeftTarget, newRightTarget);
+                telemetry.addData("Currently at", " at %7d :%7d", leftDrive.getCurrentPosition(), rightDrive.getCurrentPosition());
+                telemetry.addData("Motor speed at", speed);
+                telemetry.addData("Seconds left:", timeoutS - runtime.seconds());
+                telemetry.update();
+            }
+
+
+
+
+            leftDrive.setPower(0);
+            rightDrive.setPower(0);
+
+
+
+
+            leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+
+
+            sleep(250);
+        }
     }
 }
