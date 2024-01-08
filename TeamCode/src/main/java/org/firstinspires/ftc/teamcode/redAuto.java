@@ -39,8 +39,8 @@ public class redAuto extends LinearOpMode {
     public static double borderBottomY  = 0.0;   //fraction of pixels from the bottom of the cam to skip
 
 
-    private double lowerruntime = 0;
-    private double upperruntime = 0;
+    private double lowerRunTime = 0;
+    private double upperRunTime = 0;
 
 
     // Pink Range                                      Y      Cr     Cb
@@ -138,74 +138,71 @@ public class redAuto extends LinearOpMode {
         waitForStart();
 
 
-        while (opModeIsActive() && notMoved)
-        {
-            myPipeline.configureBorders(borderLeftX, borderRightX, borderTopY, borderBottomY);
-            if(myPipeline.error){
-                telemetry.addData("Exception: ", myPipeline.debug);
-            }
-            // Only use this line of the code when you want to find the lower and upper values
-            testing(myPipeline);
-
-
-            telemetry.addData("RectHeight: ", myPipeline.getRectHeight());
-            telemetry.update();
-
-
-            encoderDrive(0.1, 12, 12, 10);
-
-
-//\sample
-            while (notMoved) {
-                if (myPipeline.getRectHeight() > 100 && notMoved) {
-                    if (myPipeline.getRectMidpointX() < (CAMERA_WIDTH / 3.0) * 2.0) {
-                        AUTONOMOUS_B();
-                        notMoved = false;
-                    }
-                }
-
-
-                if (notMoved) {
-                    encoderDrive(0.1, -robotCircumference / 8, robotCircumference / 8, 5);
-                    sleep(100);
-                }
-
-
-                if (myPipeline.getRectHeight() > 150 && notMoved) {
-                    if (myPipeline.getRectMidpointX() < CAMERA_WIDTH / 3.0) {
-                        AUTONOMOUS_C();
-                        notMoved = false;
-                    }
-                }
-
-
-                if (notMoved) {
-                    encoderDrive(0.1, robotCircumference / 4, -robotCircumference / 4, 5);
-                    sleep(100);
-                }
-
-
-                if (myPipeline.getRectHeight() > 50 && notMoved) {
-                    notMoved = false;
-                    AUTONOMOUS_A();
-                }
-            }
+        myPipeline.configureBorders(borderLeftX, borderRightX, borderTopY, borderBottomY);
+        if(myPipeline.error){
+            telemetry.addData("Exception: ", myPipeline.debug);
         }
-        intake.setPower(0.5);
-        encoderDrive(0.05, -5, -5, 5);
-        sleep(500);
-        intake.setPower(0);
+        // Only use this line of the code when you want to find the lower and upper values
+        testing(myPipeline);
+
+
+        telemetry.addData("RectHeight: ", myPipeline.getRectHeight());
+        telemetry.update();
+
+
+        encoderDrive(0.1, 16, 16, 10);
+
+
+
+
+        telemetry.addData("RectHeight: ", myPipeline.getRectHeight());
+        telemetry.update();
+
+
+        if (myPipeline.getRectHeight() > 100 && notMoved) {
+            AUTONOMOUS_B();
+            notMoved = false;
+        }
+
+
+        if (notMoved) {
+            encoderDrive(0.1, -6, -6, 5);
+            encoderDrive(0.1, -robotCircumference / 8, robotCircumference / 8, 5);
+            sleep(100);
+        }
+
+
+        if (myPipeline.getRectHeight() > 300 && notMoved) {
+            AUTONOMOUS_C();
+            notMoved = false;
+        }
+
+
+        if (notMoved) {
+            encoderDrive(0.1, robotCircumference / 4, -robotCircumference / 4, 5);
+            sleep(100);
+        }
+
+
+        if (notMoved) {
+            notMoved = false;
+            AUTONOMOUS_A();
+        }
+
+
+
+
     }
     public void testing(ContourPipeline myPipeline){
-        if(lowerruntime + 0.05 < getRuntime()){
+        if(lowerRunTime + 0.05 < getRuntime()){
             CrLowerUpdate += -gamepad1.left_stick_y;
             CbLowerUpdate += gamepad1.left_stick_x;
-            lowerruntime = getRuntime();
+            lowerRunTime = getRuntime();
         }
-        if(upperruntime + 0.05 < getRuntime()){
+        if(upperRunTime + 0.05 < getRuntime()){
             CrUpperUpdate += -gamepad1.right_stick_y;
             CbUpperUpdate += gamepad1.right_stick_x;
-            upperruntime = getRuntime();
+            upperRunTime = getRuntime();
         }
 
 
@@ -231,18 +228,40 @@ public class redAuto extends LinearOpMode {
     }
     public void AUTONOMOUS_A(){
         telemetry.addData("dir", "right");
+        telemetry.update();
         encoderDrive(0.1, 8, 8, 7);
+        sleep(500);
+        dropOffPixel();
+        encoderDrive(0.1, -3, -3, 5);
+        encoderDrive(0.1, -robotCircumference/8, robotCircumference/8, 5);
+        encoderDrive(0.1, -10, -10, 5);
     }
     public void AUTONOMOUS_B(){
         telemetry.addData("dir", "center");
-        encoderDrive(0.1, 20, 20, 10);
+        telemetry.update();
+        encoderDrive(0.1, 14, 14, 10);
+        sleep(500);
+        dropOffPixel();
+        encoderDrive(0.1, -25, -25, 10);
     }
     public void AUTONOMOUS_C(){
         telemetry.addData("dir", "left");
-        encoderDrive(0.1, 8, 8, 7);
+        telemetry.update();
+        encoderDrive(0.1, 8, 8, 5);
+        sleep(500);
+        dropOffPixel();
+        encoderDrive(0.1, -3, -3, 5);
+        encoderDrive(0.1, robotCircumference/8, -robotCircumference/8, 5);
+        encoderDrive(0.1, -10, -10, 5);
     }
 
 
+    public void dropOffPixel() {
+        intake.setPower(0.25);
+        encoderDrive(0.025, -5, -5, 5);
+        sleep(500);
+        intake.setPower(0);
+    }
 
 
     public void encoderDrive(double speed, double leftInches, double rightInches, double timeoutS) {
@@ -285,10 +304,6 @@ public class redAuto extends LinearOpMode {
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
                     (leftDrive.isBusy() && rightDrive.isBusy())) {
-                telemetry.addData("Running to", " %7d :%7d", newLeftTarget, newRightTarget);
-                telemetry.addData("Currently at", " at %7d :%7d", leftDrive.getCurrentPosition(), rightDrive.getCurrentPosition());
-                telemetry.addData("Motor speed at", speed);
-                telemetry.addData("Seconds left:", timeoutS - runtime.seconds());
                 telemetry.update();
             }
 
