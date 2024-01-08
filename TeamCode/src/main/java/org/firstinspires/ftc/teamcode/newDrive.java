@@ -18,7 +18,7 @@ public class newDrive extends OpMode {
     Servo launcher;
     CRServo linear;
     Servo clawPincer;
-    CRServo clawWrist;
+    Servo clawWrist;
     CRServo clawElbow;
 
     boolean runningEncoder = false;
@@ -35,7 +35,7 @@ public class newDrive extends OpMode {
         launcher = hardwareMap.get(Servo.class, "launcher");
         linear = hardwareMap.get(CRServo.class, "linear");
         clawPincer = hardwareMap.get(Servo.class, "clawPincer");
-        clawWrist = hardwareMap.get(CRServo.class, "clawWrist");
+        clawWrist = hardwareMap.get(Servo.class, "clawWrist");
         clawElbow = hardwareMap.get(CRServo.class, "clawElbow");
 
         // setup motors to use encoders and set their stopping to brake
@@ -138,8 +138,8 @@ public class newDrive extends OpMode {
         }
 
         // turn "wrist" of claw
-        double wristPower = gamepad2.left_stick_y;
-        clawWrist.setPower(wristPower);
+        double wristPos = (gamepad2.left_stick_y/2) + 0.5;
+        clawWrist.setPosition(wristPos);
 
         // spin claw's own arm around its "elbow"
         double elbowPower = gamepad2.right_stick_x;
