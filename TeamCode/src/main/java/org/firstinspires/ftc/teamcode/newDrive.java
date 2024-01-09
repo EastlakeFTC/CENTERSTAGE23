@@ -16,10 +16,9 @@ public class newDrive extends OpMode {
     DcMotor intake;
     DcMotor arm;
     Servo launcher;
-    CRServo linear;
     Servo clawPincer;
     Servo clawWrist;
-    CRServo clawElbow;
+    Servo clawElbow;
 
     boolean runningEncoder = false;
     boolean started = false;
@@ -33,10 +32,9 @@ public class newDrive extends OpMode {
         intake = hardwareMap.get(DcMotor.class, "intake");
         arm = hardwareMap.get(DcMotor.class, "arm");
         launcher = hardwareMap.get(Servo.class, "launcher");
-        linear = hardwareMap.get(CRServo.class, "linear");
         clawPincer = hardwareMap.get(Servo.class, "clawPincer");
         clawWrist = hardwareMap.get(Servo.class, "clawWrist");
-        clawElbow = hardwareMap.get(CRServo.class, "clawElbow");
+        clawElbow = hardwareMap.get(Servo.class, "clawElbow");
 
         // setup motors to use encoders and set their stopping to brake
         leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -49,6 +47,7 @@ public class newDrive extends OpMode {
         arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         launcher.setDirection(Servo.Direction.FORWARD);
+        clawElbow.setPosition(0.5);
     }
 
     @Override
@@ -130,20 +129,20 @@ public class newDrive extends OpMode {
 
         // open and close claw pincer
         if(gamepad2.right_bumper){
-            clawPincer.setPosition(1);
+            clawPincer.setPosition(0.75);
         }
 
         if(gamepad2.left_bumper){
-            clawPincer.setPosition(0);
+            clawPincer.setPosition(0.25);
         }
 
         // turn "wrist" of claw
-        double wristPos = (gamepad2.left_stick_y/2) + 0.5;
+        double wristPos = Math.round( ( (gamepad2.left_stick_y/2) + 0.5) * 100.0) / 100.0;
         clawWrist.setPosition(wristPos);
 
         // spin claw's own arm around its "elbow"
-        double elbowPower = gamepad2.right_stick_x;
-        clawElbow.setPower(elbowPower);
+        double elbowPos = Math.round( ( (gamepad2.right_stick_x/2) + 0.5) * 100.0) / 100.0;
+        clawElbow.setPosition(elbowPos);
 
         //if(gamepad1.dpad_down){
         //    launcher.setPosition(0.0);
