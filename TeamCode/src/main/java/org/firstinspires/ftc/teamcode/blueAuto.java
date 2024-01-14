@@ -34,6 +34,10 @@ public class blueAuto extends LinearOpMode {
 
     public static double borderLeftX    = 0.0;   //fraction of pixels from the left side of the cam to skip
     public static double borderRightX   = 0.0;   //fraction of pixels from the right of the cam to skip
+    // Pink Range                                      Y      Cr     Cb
+//    public static Scalar scalarLowerYCrCb = new Scalar(  0.0, 160.0, 100.0);
+//    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 255.0);
+
     public static double borderTopY     = 0.0;   //fraction of pixels from the top of the cam to skip
     public static double borderBottomY  = 0.0;   //fraction of pixels from the bottom of the cam to skip
 
@@ -41,10 +45,6 @@ public class blueAuto extends LinearOpMode {
     private double lowerRunTime = 0;
     private double upperRunTime = 0;
 
-
-    // Pink Range                                      Y      Cr     Cb
-//    public static Scalar scalarLowerYCrCb = new Scalar(  0.0, 160.0, 100.0);
-//    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 255.0);
 
 
     // Yellow Range
