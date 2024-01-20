@@ -45,6 +45,7 @@ public class newDrive extends OpMode {
         arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         launcher.setDirection(Servo.Direction.FORWARD);
+        clawPincer.setPosition(0.5);
     }
 
     @Override

@@ -18,6 +18,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous(name="Blue Auto")
 
+
 public class blueAuto extends LinearOpMode {
     private OpenCvCamera webcam;
 
@@ -34,10 +35,6 @@ public class blueAuto extends LinearOpMode {
 
     public static double borderLeftX    = 0.0;   //fraction of pixels from the left side of the cam to skip
     public static double borderRightX   = 0.0;   //fraction of pixels from the right of the cam to skip
-    // Pink Range                                      Y      Cr     Cb
-//    public static Scalar scalarLowerYCrCb = new Scalar(  0.0, 160.0, 100.0);
-//    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 255.0);
-
     public static double borderTopY     = 0.0;   //fraction of pixels from the top of the cam to skip
     public static double borderBottomY  = 0.0;   //fraction of pixels from the bottom of the cam to skip
 
@@ -46,14 +43,22 @@ public class blueAuto extends LinearOpMode {
     private double upperRunTime = 0;
 
 
+    // Pink Range                                      Y      Cr     Cb
+//    public static Scalar scalarLowerYCrCb = new Scalar(  0.0, 160.0, 100.0);
+//    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 255.0);
+
 
     // Yellow Range
     //public static Scalar scalarLowerYCrCb = new Scalar(0.0, 100.0, 0.0);
 //  public static Scalar scalarUpperYCrCb = new Scalar(255.0, 170.0, 120.0);
 
+//    // Red Range
+//    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 160.0, 100.0);
+//    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 255.0);
+
     // Blue Range
-    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 0.0, 120.0);
-    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 100.0, 255.0);
+    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 0.0, 128.0);
+    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 120.0, 255.0);
 
 
     // declare motors
@@ -96,8 +101,8 @@ public class blueAuto extends LinearOpMode {
 
 
 
-        leftDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightDrive.setDirection(DcMotor.Direction.REVERSE);
         intake.setDirection(DcMotor.Direction.FORWARD);
 
 
@@ -148,7 +153,7 @@ public class blueAuto extends LinearOpMode {
         telemetry.update();
 
 
-        encoderDrive(0.1, 16, 16, 10);
+        encoderDrive(0.1, 13, 13, 8);
 
 
 
@@ -157,20 +162,19 @@ public class blueAuto extends LinearOpMode {
         telemetry.update();
 
 
-        if (myPipeline.getRectHeight() > 100 && notMoved) {
+        if (myPipeline.getRectHeight() > 400 && notMoved) {
             AUTONOMOUS_B();
             notMoved = false;
         }
 
 
         if (notMoved) {
-            encoderDrive(0.1, -6, -6, 5);
             encoderDrive(0.1, -robotCircumference / 8, robotCircumference / 8, 5);
             sleep(100);
         }
 
 
-        if (myPipeline.getRectHeight() > 300 && notMoved) {
+        if (myPipeline.getRectHeight() > 400 && notMoved) {
             AUTONOMOUS_C();
             notMoved = false;
         }
@@ -227,30 +231,30 @@ public class blueAuto extends LinearOpMode {
     public void AUTONOMOUS_A(){
         telemetry.addData("dir", "right");
         telemetry.update();
-        encoderDrive(0.1, 8, 8, 7);
+        encoderDrive(0.1, 11, 11, 10);
         sleep(500);
         dropOffPixel();
         encoderDrive(0.1, -3, -3, 5);
         encoderDrive(0.1, -robotCircumference/8, robotCircumference/8, 5);
-        encoderDrive(0.1, -10, -10, 5);
+        encoderDrive(0.1, -13, -13, 5);
     }
     public void AUTONOMOUS_B(){
         telemetry.addData("dir", "center");
         telemetry.update();
-        encoderDrive(0.1, 14, 14, 10);
+        encoderDrive(0.1, 17, 17, 12);
         sleep(500);
         dropOffPixel();
-        encoderDrive(0.1, -25, -25, 10);
+        encoderDrive(0.1, -28, -28, 12);
     }
     public void AUTONOMOUS_C(){
         telemetry.addData("dir", "left");
         telemetry.update();
-        encoderDrive(0.1, 8, 8, 5);
+        encoderDrive(0.1, 11, 11, 10);
         sleep(500);
         dropOffPixel();
         encoderDrive(0.1, -3, -3, 5);
         encoderDrive(0.1, robotCircumference/8, -robotCircumference/8, 5);
-        encoderDrive(0.1, -10, -10, 5);
+        encoderDrive(0.1, -13, -13, 5);
     }
 
 
