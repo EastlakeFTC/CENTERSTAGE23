@@ -150,7 +150,7 @@ public class whiteAuton extends LinearOpMode {
         telemetry.update();
 
 
-        encoderDrive(0.1, 13, 13, 8);
+//        encoderDrive(0.1, 13, 13, 8);
 
 
 
@@ -166,7 +166,7 @@ public class whiteAuton extends LinearOpMode {
 
 
         if (notMoved) {
-            encoderDrive(0.1, -robotCircumference / 8, robotCircumference / 8, 5);
+//            encoderDrive(0.1, -robotCircumference / 8, robotCircumference / 8, 5);
             sleep(100);
         }
 
@@ -178,7 +178,7 @@ public class whiteAuton extends LinearOpMode {
 
 
         if (notMoved) {
-            encoderDrive(0.1, robotCircumference / 4, -robotCircumference / 4, 5);
+//            encoderDrive(0.1, robotCircumference / 4, -robotCircumference / 4, 5);
             sleep(100);
         }
 
@@ -228,30 +228,30 @@ public class whiteAuton extends LinearOpMode {
     public void AUTONOMOUS_A(){
         telemetry.addData("dir", "right");
         telemetry.update();
-        encoderDrive(0.1, 11, 11, 10);
-        sleep(500);
-        dropOffPixel();
-        encoderDrive(0.1, -3, -3, 5);
-        encoderDrive(0.1, -robotCircumference/8, robotCircumference/8, 5);
-        encoderDrive(0.1, -13, -13, 5);
+//        encoderDrive(0.1, 11, 11, 10);
+//        sleep(500);
+//        dropOffPixel();
+//        encoderDrive(0.1, -3, -3, 5);
+//        encoderDrive(0.1, -robotCircumference/8, robotCircumference/8, 5);
+//        encoderDrive(0.1, -13, -13, 5);
     }
     public void AUTONOMOUS_B(){
         telemetry.addData("dir", "center");
         telemetry.update();
-        encoderDrive(0.1, 17, 17, 12);
-        sleep(500);
-        dropOffPixel();
-        encoderDrive(0.1, -28, -28, 12);
+//        encoderDrive(0.1, 17, 17, 12);
+//        sleep(500);
+//        dropOffPixel();
+//        encoderDrive(0.1, -28, -28, 12);
     }
     public void AUTONOMOUS_C(){
         telemetry.addData("dir", "left");
         telemetry.update();
-        encoderDrive(0.1, 11, 11, 10);
-        sleep(500);
-        dropOffPixel();
-        encoderDrive(0.1, -3, -3, 5);
-        encoderDrive(0.1, robotCircumference/8, -robotCircumference/8, 5);
-        encoderDrive(0.1, -13, -13, 5);
+//        encoderDrive(0.1, 11, 11, 10);
+//        sleep(500);
+//        dropOffPixel();
+//        encoderDrive(0.1, -3, -3, 5);
+//        encoderDrive(0.1, robotCircumference/8, -robotCircumference/8, 5);
+//        encoderDrive(0.1, -13, -13, 5);
     }
 
 
