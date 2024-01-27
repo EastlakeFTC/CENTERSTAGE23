@@ -146,7 +146,7 @@ public class blueAuto extends LinearOpMode {
             telemetry.addData("Exception: ", myPipeline.debug);
         }
         // Only use this line of the code when you want to find the lower and upper values
-        testing(myPipeline);
+        //testing(myPipeline);
 
 
         telemetry.addData("RectHeight: ", myPipeline.getRectHeight());
