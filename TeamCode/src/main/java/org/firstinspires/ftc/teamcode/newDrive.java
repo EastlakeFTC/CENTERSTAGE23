@@ -133,12 +133,14 @@ public class newDrive extends OpMode {
         // claw controls
 
         // open and close claw pincer
+        telemetry.addData("Pincer Servo:", clawPincer.getPosition());
+
         if(gamepad2.right_bumper){
-            clawPincer.setPosition(0.65);
+            clawPincer.setPosition(0.6);
         }
 
         if(gamepad2.left_bumper){
-            clawPincer.setPosition(0.35);
+            clawPincer.setPosition(0.4);
         }
 
         // turn "wrist" of claw
