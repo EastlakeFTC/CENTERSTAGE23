@@ -11,9 +11,9 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous(name="Red Near Auto")
+@Autonomous(name="Red Far Auto")
 
-public class redAuto extends LinearOpMode {
+public class redFarAuto extends LinearOpMode {
     private OpenCvCamera webcam;
 
 
@@ -187,7 +187,7 @@ public class redAuto extends LinearOpMode {
 
         // park in backstage
         encoderDrive(0.1, robotCircumference/4, -robotCircumference/4, 3);
-        encoderDrive(0.2, -25, -25, 8);
+        encoderDrive(0.2, -40, -40, 15);
 
         dropOffPixel();
     }

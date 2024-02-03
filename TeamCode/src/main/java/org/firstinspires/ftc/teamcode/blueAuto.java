@@ -16,7 +16,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 
-@Autonomous(name="Blue Auto")
+@Autonomous(name="Blue Near Auto")
 
 
 public class blueAuto extends LinearOpMode {
@@ -169,7 +169,7 @@ public class blueAuto extends LinearOpMode {
 
 
         if (notMoved) {
-            encoderDrive(0.1, -robotCircumference / 8, robotCircumference / 8, 5);
+            encoderDrive(0.1, -robotCircumference / 8, robotCircumference / 8, 3);
             sleep(100);
         }
 
@@ -181,7 +181,7 @@ public class blueAuto extends LinearOpMode {
 
 
         if (notMoved) {
-            encoderDrive(0.1, robotCircumference / 4, -robotCircumference / 4, 5);
+            encoderDrive(0.1, robotCircumference / 4, -robotCircumference / 4, 3);
             sleep(100);
         }
 
@@ -191,8 +191,11 @@ public class blueAuto extends LinearOpMode {
             AUTONOMOUS_A();
         }
 
+        // park in backstage
+        encoderDrive(0.1, robotCircumference/4, -robotCircumference/4, 3);
+        encoderDrive(0.2, -25, -25, 8);
 
-
+        dropOffPixel();
 
     }
     public void testing(ContourPipeline myPipeline){
@@ -231,36 +234,36 @@ public class blueAuto extends LinearOpMode {
     public void AUTONOMOUS_A(){
         telemetry.addData("dir", "right");
         telemetry.update();
-        encoderDrive(0.1, 11, 11, 10);
+        encoderDrive(0.1, 11, 11, 7);
         sleep(500);
         dropOffPixel();
-        encoderDrive(0.1, -3, -3, 5);
-        encoderDrive(0.1, -robotCircumference/8, robotCircumference/8, 5);
-        encoderDrive(0.1, -13, -13, 5);
+        encoderDrive(0.1, -3, -3, 3);
+        encoderDrive(0.1, -robotCircumference/8, robotCircumference/8, 3);
+        encoderDrive(0.1, -13, -13, 3);
     }
     public void AUTONOMOUS_B(){
         telemetry.addData("dir", "center");
         telemetry.update();
-        encoderDrive(0.1, 17, 17, 12);
+        encoderDrive(0.1, 17, 17, 9);
         sleep(500);
         dropOffPixel();
-        encoderDrive(0.1, -28, -28, 12);
+        encoderDrive(0.1, -28, -28, 9);
     }
     public void AUTONOMOUS_C(){
         telemetry.addData("dir", "left");
         telemetry.update();
-        encoderDrive(0.1, 11, 11, 10);
+        encoderDrive(0.1, 11, 11, 7);
         sleep(500);
         dropOffPixel();
-        encoderDrive(0.1, -3, -3, 5);
-        encoderDrive(0.1, robotCircumference/8, -robotCircumference/8, 5);
-        encoderDrive(0.1, -13, -13, 5);
+        encoderDrive(0.1, -3, -3, 3);
+        encoderDrive(0.1, robotCircumference/8, -robotCircumference/8, 3);
+        encoderDrive(0.1, -13, -13, 3);
     }
 
 
     public void dropOffPixel() {
         intake.setPower(0.25);
-        encoderDrive(0.025, -5, -5, 5);
+        encoderDrive(0.025, -5, -5, 3);
         sleep(500);
         intake.setPower(0);
     }

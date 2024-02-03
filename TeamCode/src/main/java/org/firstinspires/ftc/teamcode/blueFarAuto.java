@@ -1,9 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
+
+
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.opencv.core.Scalar;
@@ -11,9 +15,11 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous(name="Red Near Auto")
 
-public class redAuto extends LinearOpMode {
+@Autonomous(name="Blue Far Auto")
+
+
+public class blueFarAuto extends LinearOpMode {
     private OpenCvCamera webcam;
 
 
@@ -46,13 +52,13 @@ public class redAuto extends LinearOpMode {
     //public static Scalar scalarLowerYCrCb = new Scalar(0.0, 100.0, 0.0);
 //  public static Scalar scalarUpperYCrCb = new Scalar(255.0, 170.0, 120.0);
 
-//    // Blue Range
-//    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 0.0, 128.0);
-//    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 120.0, 255.0);
+//    // Red Range
+//    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 160.0, 100.0);
+//    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 255.0);
 
-    // Red Range
-    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 160.0, 100.0);
-    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 255.0);
+    // Blue Range
+    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 0.0, 128.0);
+    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 120.0, 255.0);
 
 
     // declare motors
@@ -187,9 +193,10 @@ public class redAuto extends LinearOpMode {
 
         // park in backstage
         encoderDrive(0.1, robotCircumference/4, -robotCircumference/4, 3);
-        encoderDrive(0.2, -25, -25, 8);
+        encoderDrive(0.2, -40, -40, 15);
 
         dropOffPixel();
+
     }
     public void testing(ContourPipeline myPipeline){
         if(lowerRunTime + 0.05 < getRuntime()){
@@ -275,17 +282,29 @@ public class redAuto extends LinearOpMode {
 
         if (opModeIsActive()) {
 
+
+
+
             newLeftTarget = (leftDrive.getCurrentPosition() + (int)(leftInches * counts_per_inch));
             newRightTarget = (rightDrive.getCurrentPosition() + (int)(rightInches * counts_per_inch));
             leftDrive.setTargetPosition(newLeftTarget);
             rightDrive.setTargetPosition(newRightTarget);
 
+
+
+
             leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+
 
             runtime.reset();
             leftDrive.setPower(Math.abs(speed));
             rightDrive.setPower(Math.abs(speed));
+
+
+
 
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
@@ -293,11 +312,20 @@ public class redAuto extends LinearOpMode {
                 telemetry.update();
             }
 
+
+
+
             leftDrive.setPower(0);
             rightDrive.setPower(0);
 
+
+
+
             leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+
 
             sleep(250);
         }
